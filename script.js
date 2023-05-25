@@ -153,8 +153,9 @@ const renderInfoPuppy = (puppyInfo) => {
         `
         const teamSearch = divEl.querySelector('.team-search')
         teamSearch.addEventListener('click', (e) => {
+            console.log(team)
             e.preventDefault();
-            const newUrl = `${baseUrl}/details.html?id=` + players.id;
+            const newUrl = `${baseUrl}/details.html?id=` + team.id;
             window.location.href = newUrl;
         })
     }
