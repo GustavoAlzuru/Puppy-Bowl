@@ -1,6 +1,6 @@
 const playerContainer = document.getElementById('all-players-container');
 const newPlayerFormContainer = document.getElementById('new-player-form');
-const deployURL = 'https://puppy-bowl-project.netlify.app'
+const baseUrl = window.location.origin;
 
 // Add your cohort name to the cohortName variable below, replacing the 'COHORT-NAME' placeholder
 const cohortName = '2023-acc-et-web-pt-c';
@@ -106,7 +106,7 @@ const renderAllPlayers = (playerList) => {
             const removeBtn = divEl.querySelector('.remove-button');
             infoButton.addEventListener('click', (e) => {
                 e.preventDefault();
-                const newUrl = `${deployURL}?id=` + players.id;
+                const newUrl = `${baseUrl}/details.html?id=${players.id}`;
                 window.location.href = newUrl;
             });
             removeBtn.addEventListener('click', (e) => {
@@ -131,7 +131,6 @@ const init = async () => {
 // DETAILS DOG PAGE
 const renderInfoPuppy = (puppyInfo) => {
     const detailsContainer = document.getElementById('main')
-    console.log(puppyInfo)
     main.innerHTML = `<div>
     <a href="./index.html">
     <svg width="44px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#0000ff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="F-Chevron"> <polyline fill="none" id="Left" points="15.5 5 8.5 12 15.5 19" stroke="#0000ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline> </g> </g> </g></svg>
@@ -155,7 +154,7 @@ const renderInfoPuppy = (puppyInfo) => {
         const teamSearch = divEl.querySelector('.team-search')
         teamSearch.addEventListener('click', (e) => {
             e.preventDefault();
-            const newUrl = `${deployURL}?id=` + team.id;
+            const newUrl = 'http://127.0.0.1:5500/details.html?id=' + players.id;
             window.location.href = newUrl;
         })
     }
@@ -163,9 +162,9 @@ const renderInfoPuppy = (puppyInfo) => {
 
 const urlParams = new URLSearchParams(window.location.search);
 const playerId = urlParams.get('id');
-const desireURL = deployURL
+const desireURL = baseUrl
 const currentUrl = window.location.href
-const windowLocation = `${deployURL}?id=${playerId}`
+const windowLocation = `http://127.0.0.1:5500/details.html?id=${playerId}`
 
 if(desireURL === currentUrl || currentUrl != windowLocation){
     init();
