@@ -1,5 +1,6 @@
 const playerContainer = document.getElementById('all-players-container');
 const newPlayerFormContainer = document.getElementById('new-player-form');
+const deployURL = 'https://puppy-bowl-project.netlify.app'
 
 // Add your cohort name to the cohortName variable below, replacing the 'COHORT-NAME' placeholder
 const cohortName = '2023-acc-et-web-pt-c';
@@ -105,7 +106,7 @@ const renderAllPlayers = (playerList) => {
             const removeBtn = divEl.querySelector('.remove-button');
             infoButton.addEventListener('click', (e) => {
                 e.preventDefault();
-                const newUrl = 'http://127.0.0.1:5500/details.html?id=' + players.id;
+                const newUrl = `${deployURL}?id=` + players.id;
                 window.location.href = newUrl;
             });
             removeBtn.addEventListener('click', (e) => {
@@ -162,9 +163,9 @@ const renderInfoPuppy = (puppyInfo) => {
 
 const urlParams = new URLSearchParams(window.location.search);
 const playerId = urlParams.get('id');
-const desireURL = 'http://127.0.0.1:5500/index.html'
+const desireURL = deployURL
 const currentUrl = window.location.href
-const windowLocation = `http://127.0.0.1:5500/details.html?id=${playerId}`
+const windowLocation = `${deployURL}?id=${playerId}`
 
 if(desireURL === currentUrl || currentUrl != windowLocation){
     init();
