@@ -4,7 +4,7 @@ const newPlayerFormContainer = document.getElementById('new-player-form');
 // Add your cohort name to the cohortName variable below, replacing the 'COHORT-NAME' placeholder
 const cohortName = '2023-acc-et-web-pt-c';
 // Use the APIURL variable for fetch requests
-const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
+const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}`;
 
 /**
  * It fetches all players from the API and returns them
@@ -32,7 +32,17 @@ const fetchSinglePlayer = async (playerId) => {
 
 const addNewPlayer = async (playerObj) => {
     try {
-
+        const data = await fetch(`${APIURL}/players`, {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+            },
+            body: JSON.stringify({name: playerObj.name, breed: playerObj.breed, imageUrl: playerObj.imageUrl, status: playerObj.status})
+        })
+        const response = await data.json()
+        if(response){
+            location.reload()
+        }
     } catch (err) {
         console.error('Oops, something went wrong with adding that player!', err);
     }
@@ -40,7 +50,14 @@ const addNewPlayer = async (playerObj) => {
 
 const removePlayer = async (playerId) => {
     try {
-
+        const remove = await fetch(`${APIURL}/players/${playerId}`,
+        {
+            method: 'DELETE'
+        })
+        const result = await remove.json()
+        if(result.success){
+            location.reload()
+        }
     } catch (err) {
         console.error(
             `Whoops, trouble removing player #${playerId} from the roster!`,
@@ -80,16 +97,21 @@ const renderAllPlayers = (playerList) => {
             <img src=${players.imageUrl}>
             <div>
             <button class='info-button'>More information</button>
-            <button>Remove</button>
+            <button class='remove-button'>Remove</button>
             </div>
             </div>`
 
             const infoButton = divEl.querySelector('.info-button');
+            const removeBtn = divEl.querySelector('.remove-button');
             infoButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 const newUrl = 'http://127.0.0.1:5500/details.html?id=' + players.id;
                 window.location.href = newUrl;
             });
+            removeBtn.addEventListener('click', (e) => {
+                e.preventDefault()
+                removePlayer(players.id)
+            })
             playerContainer.appendChild(divEl)
 
         }
@@ -99,29 +121,11 @@ const renderAllPlayers = (playerList) => {
 };
 
 
-/**
- * It renders a form to the DOM, and when the form is submitted, it adds a new player to the database,
- * fetches all players from the database, and renders them to the DOM.
- */
-const renderNewPlayerForm = () => {
-    try {
-        
-    } catch (err) {
-        console.error('Uh oh, trouble rendering the new player form!', err);
-    }
-}
-
 const init = async () => {
     const players = await fetchAllPlayers();
     renderAllPlayers(players);
-    renderNewPlayerForm();
 }
-const desireURL = 'http://127.0.0.1:5500/index.html'
-const currentUrl = window.location.href
 
-if(desireURL === currentUrl){
-    init();
-}
 
 // DETAILS DOG PAGE
 const renderInfoPuppy = (puppyInfo) => {
@@ -133,14 +137,13 @@ const renderInfoPuppy = (puppyInfo) => {
     </a>
     <h2>Name: ${puppyInfo.name}</h2>
     <p class='info-breed'><b>Breed:</b> ${puppyInfo.breed}</p>
-    <p><b>Team Name: </b>${puppyInfo.team.name}</p>
-    <p><b>Score: </b>${puppyInfo.team.score}</p>
     <div class='img-container'>
     <img src=${puppyInfo.imageUrl} class='info-img'>
     </div>
     <h3>Team</h3>
     <div class='team-container'></div>
     </div>`
+    if(!puppyInfo.team) return
     for(let team of puppyInfo.team.players){
         const teamContainer = main.querySelector('.team-container')
         const divEl = document.createElement('div')
@@ -159,10 +162,14 @@ const renderInfoPuppy = (puppyInfo) => {
 
 const urlParams = new URLSearchParams(window.location.search);
 const playerId = urlParams.get('id');
-
+const desireURL = 'http://127.0.0.1:5500/index.html'
+const currentUrl = window.location.href
 const windowLocation = `http://127.0.0.1:5500/details.html?id=${playerId}`
-const currentLocation = window.location.href
-if(windowLocation === currentLocation){
+
+if(desireURL === currentUrl || currentUrl != windowLocation){
+    init();
+}
+if(windowLocation === currentUrl){
     const fetchSingle = async () => {
         const dataPuppy = await fetchSinglePlayer(playerId)
         renderInfoPuppy(dataPuppy.player)
@@ -170,5 +177,26 @@ if(windowLocation === currentLocation){
     fetchSingle()
 }
 
+// open modal and close modal
 
+const openButton = document.querySelector('.create-puppy')
+const closeButton = document.querySelector('.close')
+const modal = document.querySelector('.modal')
+
+openButton.addEventListener('click', () => {
+    modal.classList.add('show')
+})
+closeButton.addEventListener('click', () => {
+    modal.classList.remove('show')
+})
+
+
+// handle form submit
+const submitPuppy = document.getElementById('submitPuppy')
+const submitBtn = document.getElementById('submit-btn')
+submitBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    const formData = Object.fromEntries(new FormData(submitPuppy))
+    addNewPlayer(formData)
+})
 

@@ -10,9 +10,42 @@
 </head>
 <body>
   <!-- form to add new players -->
+  <div class="modal">
+    <div class="modal-container">
+      <form id="submitPuppy">
+          <div class="close-container">
+            <button class="close" type="button">❌</button>
+          </div>
+          <h4>Submit your pet information</h4>
+          <div class="form-container">
+            <div>
+              <label>Name</label>
+              <input type="text" placeholder="Type the puppy name" name="name" required>
+            </div>
+            <div>
+              <label>Breed</label>
+              <input type="text" placeholder="German Shepherd, Labrador, Australian Shepherd" name="breed" required>
+            </div>
+            <div>
+              <label>Status</label>
+              <input type="text" placeholder="field or bench" name="status" required>
+            </div>
+            <div>
+              <label>Image URL</label>
+              <input type="text" value="http://r.ddmcdn.com/w_1012/s_f/o_1/cx_0/cy_0/cw_1012/ch_1518/APL/uploads/2019/12/Kenny-PBXVI.jpg" name="imageUrl" required>
+            </div>
+          </div>
+          <div class="submit-btn">
+            <button type="submit" id="submit-btn">Submit</button>
+          </div>
+      </form>
+    </div>
+  </div>
   <h1>Puppy Bowl</h1>
   <div id="new-player-form">
-    
+    <div class="create-puppy-container">
+      <button class="create-puppy">Create new Puppy</button>
+    </div>
   </div>
 
   <!-- container for all players -->
@@ -22,3 +55,4 @@
 
 </body>
 </html>
+
