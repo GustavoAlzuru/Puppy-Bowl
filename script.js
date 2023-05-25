@@ -155,7 +155,7 @@ const renderInfoPuppy = (puppyInfo) => {
         const teamSearch = divEl.querySelector('.team-search')
         teamSearch.addEventListener('click', (e) => {
             e.preventDefault();
-            const newUrl = 'http://127.0.0.1:5500/details.html?id=' + team.id;
+            const newUrl = `${deployURL}?id=` + team.id;
             window.location.href = newUrl;
         })
     }
