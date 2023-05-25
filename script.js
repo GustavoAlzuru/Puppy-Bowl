@@ -164,7 +164,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const playerId = urlParams.get('id');
 const desireURL = baseUrl
 const currentUrl = window.location.href
-const windowLocation = `http://127.0.0.1:5500/details.html?id=${playerId}`
+const windowLocation = `${baseUrl}/details.html?id=${playerId}`
 
 if(desireURL === currentUrl || currentUrl != windowLocation){
     init();
